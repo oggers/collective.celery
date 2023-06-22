@@ -4,8 +4,13 @@ Changelog
 1.1.5 (unreleased)
 ------------------
 
+<<<<<<< HEAD
 - Check if using wsgi.
   [oggers]
+=======
+- Fix ConflictError retries, and retries for tasks run using `celery call`.
+  [alecpm]
+>>>>>>> alecpm-retry-fixes
 
 - Allow tasks to be retried.
   [enfold_josh]
