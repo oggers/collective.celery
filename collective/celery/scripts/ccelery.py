@@ -5,6 +5,7 @@ import six
 import sys
 
 from App.config import getConfiguration
+from celery import VERSION as celery_version
 from celery.bin.celery import CeleryCommand
 from celery.utils.log import get_task_logger
 from collective.celery.utils import getCelery
@@ -98,4 +99,8 @@ def main(argv=sys.argv):
     argv.remove(filepath)
     # restore argv
     sys.argv = argv
-    Worker(app=getCelery()).execute_from_commandline()
+    if celery_version.major >= 5:
+        # Celery uses click in v5+
+        getCelery().start(argv=argv[1:])
+    else:
+        Worker(app=getCelery()).execute_from_commandline()
