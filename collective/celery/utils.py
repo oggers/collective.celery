@@ -56,14 +56,13 @@ _object_marker = 'object://'
 
 def getCeleryOptions():
     zconfig = getConfiguration()
+    environ = os.environ.copy()
     if hasattr(zconfig, 'environment'):
-        environ = zconfig.environment.items()
-    else:
-        # sort of for testing...
-        environ = os.environ.items()
+        # the zope.conf environment overrides os.environ
+        environ.update(zconfig.environment.copy())
 
     config = _defaults.copy()
-    for key, value in environ:
+    for key, value in environ.items():
         # b/w interpret settings for latest celery
         key = key.replace('CELERY_', '').replace(
             'CELERYBEAT_', 'beat_').replace('CELERYD_', 'worker_').lower()
