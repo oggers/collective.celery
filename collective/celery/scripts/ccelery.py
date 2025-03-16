@@ -1,5 +1,6 @@
 # a lot of this pulled out of pyramid_celery
 from importlib import import_module
+from importlib.metadata import entry_points
 import os
 import six
 import sys
@@ -9,7 +10,6 @@ from celery import VERSION as celery_version
 from celery.bin.celery import CeleryCommand
 from celery.utils.log import get_task_logger
 from collective.celery.utils import getCelery
-from pkg_resources import iter_entry_points
 
 
 logger = get_task_logger(__name__)
@@ -68,7 +68,7 @@ def main(argv=sys.argv):
 
     # load entry point tasks up
     tasks = []
-    for entry_point in iter_entry_points(group='celery_tasks', name=None):
+    for entry_point in entry_points(group='celery_tasks'):
         try:
             tasks.append((entry_point.name, entry_point.load()))
         except ImportError:
